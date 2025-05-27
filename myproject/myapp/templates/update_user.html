@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Update User</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Update your user profile...</p>
+        </div>
+    </div>
+</header>
+
+<div class="container d-flex justify-content-center py-5">
+    <div class="col-md-6 col-sm-12">
+        <form action="{% url 'update_user' %}" method="POST">
+            {% csrf_token %}
+                {% if user_form %}
+                
+                {{ user_form.as_p }}
+
+            {% else %}
+                <p>Form not found.</p>
+            {% endif %}
+
+            <button type="submit" class="btn btn-secondary w-100 my-4">Update Profile</button>
+        </form>
+
+        <a href="{% url 'update_password' %}" class="btn btn-secondary" style="margin-left: 220px;"> Update Password</a>
+    </div>
+</div>
+{% endblock %}

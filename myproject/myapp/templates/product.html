@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="card mb-4 shadow-sm">
+        <div class="row g-0">
+            <!-- Product Image -->
+            <div class="col-md-4">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" class="img-fluid rounded-start w-100 h-100 object-fit-cover" alt="{{ product.name }}">
+                {% else %}
+                    <img src="https://via.placeholder.com/400x400?text=No+Image" class="img-fluid rounded-start w-100 h-100 object-fit-cover" alt="No image available">
+                {% endif %}
+            </div>
+
+            <!-- Product Details -->
+            <div class="col-md-8">
+                <div class="card-body d-flex flex-column justify-content-center h-100">
+                    <h3 class="card-title">{{ product.name }}</h3>
+                    <p class="card-text">{{ product.description }}</p>
+                    <!-- <p class="card-text"><small class="text-muted">{{}}</small></p> -->
+
+                    {% if product.sale %}
+                        <div class="d-flex justify-content-center text-warning mb-2">
+                            <i class="bi bi-star-fill"></i>&nbsp;&nbsp;<strong>Sale!</strong>&nbsp;&nbsp;<i class="bi bi-star-fill"></i>
+                        </div>
+                        <p>
+                            <strike class="text-muted">${{ product.price }}</strike>
+                            &nbsp;
+                            <strong class="text-danger">${{ product.sale_price }}</strong>
+                        </p>
+                    {% else %}
+                        <p><strong class="text-primary">${{ product.price }}</strong></p>
+                    {% endif %}
+
+                    <!-- Quantity Selection -->
+                    <div class="row align-items-center mb-3">
+                        <div class="col-md-2 fw-bold">Quantity</div>
+                        <div class="col-md-4">
+                            <select class="form-select form-select-sm" id="qty-cart">
+                                {% for i in "12345" %}
+                                    <option value="{{ i }}">{{ i }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'home' %}" class="btn btn-secondary">Home</a>
+                        <button type="button" value="{{ product.id }}" id="add-cart" class="btn btn-primary">
+                            Add To Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- AJAX Add to Cart Script -->
+<script>
+    $(document).on('click', '#add-cart', function(e){
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'cart_add' %}",
+            data: {
+                product_id: $('#add-cart').val(),
+                product_qty: $('#qty-cart').val(),
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post'
+            },
+            success: function(json){
+                document.getElementById("cart_quantity").innerHTML = json.qty;
+                location.reload();
+            },
+            error: function(xhr, errmsg, err){
+                console.error("Cart Add Error:", errmsg);
+            }
+        });
+    });
+</script>
+{% endblock %}
