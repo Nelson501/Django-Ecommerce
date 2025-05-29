@@ -3753,6 +3753,12 @@ textarea.form-control-lg {
   justify-content: space-between;
   padding: var(--bs-navbar-padding-y) var(--bs-navbar-padding-x);
 }
+
+.nav-item{
+  background-color: #0b5ed7;
+
+}
+
 .navbar > .container,
 .navbar > .container-fluid,
 .navbar > .container-sm,

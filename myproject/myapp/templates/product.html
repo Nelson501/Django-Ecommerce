@@ -19,19 +19,19 @@
                 <div class="card-body d-flex flex-column justify-content-center h-100">
                     <h3 class="card-title">{{ product.name }}</h3>
                     <p class="card-text">{{ product.description }}</p>
-                    <!-- <p class="card-text"><small class="text-muted">{{}}</small></p> -->
+                    <p class="card-text"><small class="text-muted">{{product.date}}</small></p>
 
                     {% if product.sale %}
                         <div class="d-flex justify-content-center text-warning mb-2">
                             <i class="bi bi-star-fill"></i>&nbsp;&nbsp;<strong>Sale!</strong>&nbsp;&nbsp;<i class="bi bi-star-fill"></i>
                         </div>
                         <p>
-                            <strike class="text-muted">${{ product.price }}</strike>
+                            <strike class="text-muted">#{{ product.price }}</strike>
                             &nbsp;
-                            <strong class="text-danger">${{ product.sale_price }}</strong>
+                            <strong class="text-danger">#{{ product.sale_price }}</strong>
                         </p>
                     {% else %}
-                        <p><strong class="text-primary">${{ product.price }}</strong></p>
+                        <p><strong class="text-primary">#{{ product.price }}</strong></p>
                     {% endif %}
 
                     <!-- Quantity Selection -->

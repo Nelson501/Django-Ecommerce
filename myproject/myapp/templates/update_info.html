@@ -13,6 +13,7 @@
 
 <div class="container d-flex justify-content-center py-5">
     <div class="col-md-6 col-sm-12">
+        <p class="my-4"> Billing Information</p>
         <form action="{% url 'update_info' %}" method="POST">
             {% csrf_token %}
                 {% if form %}
@@ -22,6 +23,12 @@
             {% else %}
                 <p>Form not found.</p>
             {% endif %}
+
+            <br><br>
+
+            <strong class="mt-4">Shipping Information</strong>
+            <br><br>
+            {{ shipping_form.as_p }}
 
             <button type="submit" class="btn btn-secondary w-100 my-4">Update Info</button>
         </form>
