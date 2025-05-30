@@ -19,14 +19,51 @@
 
                  
                 </div>
-                <div class="card">
-                <div class="card-header">
-                    Order Summary
+                <div class="card my-4">
+                    <div class="card-header">
+                        Order Summary
+                    </div>
+                    <div class="card-body">
+                        {% for product in cart_products %}
+                        {{ product.name }}
+                        {% if product.sale %}
+                            {{ product.sale_price }}
+                        {% else %}
+                            {{ product.price }}
+                        {% endif %}
+
+                        Quantity:
+                        {% for key, value in quantities.items %}
+                            {% if key == product.id|slugify %}
+                                {{ value }}
+
+                            {% endif %}
+                        {% endfor %}
+                        <br><br>
+
+
+                        {% endfor %}
+                        <p class="">Total: ${{totals}}</p>
+                        <a href="{%  url 'cart_summary' %}" class="btn btn-sm btn-outline-secondary">Update Items</a>
+                    </div>
                 </div>
-                <div class="card-body">
-                    STUFF
+
+                <div class="card mb-5" >
+                    <div class="card-header">
+                      Shipping Info
+                    </div>
+                    <div class="card-body m-4">
+                        <form method="POST" >
+                            {% csrf_token %}
+                            {{ shipping_form.as_p }}
+                            <button type="submit" class="btn btn-primary mt-3">Continue To Billing</button>
+                        </form>
+
+                    </div>
                 </div>
-                </div>
+                <!-- <a href="#" class="btn btn-secondary">Continue To Billing</a> -->
+
+
             </div>
         </div>
 

@@ -41,9 +41,6 @@ class ChangePasswordForm(SetPasswordForm):
 
 	
 
-
-
-
 class UpdateUserForm(UserChangeForm):
 	password = None
 	email = forms.EmailField(label="", widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Email Address'}), required=False)

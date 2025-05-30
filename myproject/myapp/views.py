@@ -30,50 +30,27 @@ def search(request):
     
 
     
-# def update_info(request):
-    # if request.user.is_authenticated:
-    #     current_user = Profile.objects.get(user__id=request.user.id)
-
-    #     shipping_user = ShippingAddress.objects.get(id=request.user.id)
-
-    #     form = UserInfoForm(request.POST or None, instance=current_user)
-    #     shipping_form = ShippingForm(request.POST or None, shipping_user)
-
-    #     if form.is_valid() or shipping_form.is_valid():
-    #         form.save()
-    #         shipping_form.save()
-
-    #         messages.success(request, 'Your Info Has Been Updated!!')
-    #         return redirect('home')
-    #     return render(request, 'update_info.html', {'form':form}, {'shipping_form':shipping_form})
-    # else:
-    #     messages.error(request, 'You Must Been Logged In To Access That Page!!')
-    #     return redirect('home')
-
-
 def update_info(request):
     if request.user.is_authenticated:
         current_user = Profile.objects.get(user__id=request.user.id)
-        shipping_user, created = ShippingAddress.objects.get_or_create(shipping_user=request.user)
 
+        shipping_user = ShippingAddress.objects.get(user__id=request.user.id)
+
+# 
         form = UserInfoForm(request.POST or None, instance=current_user)
         shipping_form = ShippingForm(request.POST or None, instance=shipping_user)
 
-        if form.is_valid() and shipping_form.is_valid():
+        if form.is_valid() or shipping_form.is_valid():
             form.save()
             shipping_form.save()
+
             messages.success(request, 'Your Info Has Been Updated!!')
             return redirect('home')
-
-        return render(request, 'update_info.html', {
-            'form': form,
-            'shipping_form': shipping_form
-        })
-
+        context = {'form':form,'shipping_form':shipping_form}
+        return render(request, 'update_info.html', context)
     else:
-        messages.error(request, 'You Must Be Logged In To Access That Page!!')
+        messages.error(request, 'You Must Been Logged In To Access That Page!!')
         return redirect('home')
-
 
 
 def  update_password(request):
@@ -106,8 +83,6 @@ def update_user(request):
 
         if user_form.is_valid():
             user_form.save()
-
-            # login(request, current_user)
             messages.success(request, 'User Has Been Updated!!')
             return redirect('home')
         return render(request, 'update_user.html', {'user_form': user_form})
@@ -184,6 +159,26 @@ def logout_user(request):
     return redirect('home')
 
 
+# def register_user(request):
+#     if request.method == "POST":
+#         form = SignUpForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             username = form.cleaned_data['username']
+#             password = form.cleaned_data['password1']
+#             user = authenticate(request, username=username, password=password)
+#             login(request, user)
+#             messages.success(request, 'User created - Please Fill Out Your User Info Below...')
+#             return redirect('update_info')
+#         else:
+#             messages.error(request, 'Registration failed. Please correct the errors below.')
+#             return redirect('register')
+#     else:
+#         form = SignUpForm()
+    
+#     return render(request, 'register.html', {'form': form})
+
+
 def register_user(request):
     if request.method == "POST":
         form = SignUpForm(request.POST)
@@ -197,8 +192,10 @@ def register_user(request):
             return redirect('update_info')
         else:
             messages.error(request, 'Registration failed. Please correct the errors below.')
-            return redirect('register')
+            # DO NOT REDIRECT — Re-render with form and errors
+            return render(request, 'register.html', {'form': form})
     else:
         form = SignUpForm()
     
     return render(request, 'register.html', {'form': form})
+

@@ -1,3 +1,4 @@
+
 {% extends 'base.html' %}
 {% load static %}
 
@@ -14,6 +15,32 @@
 
 <div class="container d-flex justify-content-center py-5">
     <div class="col-md-6 col-sm-12">
+
+        {# Display Django messages #}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {# Display form-specific errors, if not shown with form.as_p #}
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                <ul>
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
         <form action="{% url 'register' %}" method="POST">
             {% csrf_token %}
             {{ form.as_p }}
@@ -23,3 +50,4 @@
 </div>
 
 {% endblock %}
+
