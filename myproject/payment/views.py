@@ -4,13 +4,47 @@ from payment.forms import ShippingForm, PaymentForm
 from payment.models import ShippingAddress, Order, Order_items
 from django.contrib.auth.models import User
 from django.contrib import messages
-from myapp.models import Product
+from myapp.models import Product, Profile
+import datetime
+from django.utils import timezone
+
+
+def orders(request, pk):
+    if request.user.is_authenticated and request.user.is_superuser:
+        order = Order.objects.get(id=pk)
+        items = Order_items.objects.filter(order=pk)
+        if request.method == 'POST':
+            status = request.POST['shipping_status']
+            if status == 'true':
+                order = Order.objects.filter(id=pk)
+                now = datetime.datetime.now()
+                # now = timezone.now()
+                order.update(shipped=True, date_shipped = now)
+            else:
+                order = Order.objects.filter(id=pk)
+                order.update(shipped=False)
+            messages.success(request, 'Shipping Status Updated')
+            return redirect('home')
+        context = {'order':order, 'items':items}
+        return render(request, 'payment/orders.html', context)
+    else:
+        messages.success(request, 'Access Denied!')
+        return redirect('home')
+    
+
 
 
 
 def shipped_dash(request):
     if request.user.is_authenticated and request.user.is_superuser:
-        orders = Order.objects.filter(shipped=True)
+        orders = Order.objects.filter(shipped=True) 
+        if request.method == 'POST':
+            num = request.POST['num']
+            order = Order.objects.filter(id=num)
+            now = datetime.datetime.now()
+            order.update(shipped=False, date_shipped = now)
+            messages.success(request, 'Shipping Status Updated')
+            return redirect('home')
         context = {'orders':orders}
         return render(request, "payment/shipped_dash.html", context)
     else:
@@ -20,6 +54,13 @@ def shipped_dash(request):
 def not_shipped_dash(request):
     if request.user.is_authenticated and request.user.is_superuser:
         orders = Order.objects.filter(shipped=False)
+        if request.method == 'POST':
+            status = request.POST['shipping_status']
+            num = request.POST['num']
+            order = Order.objects.filter(id=num)
+            order.update(shipped=True)
+            messages.success(request, 'Shipping Status Updated')
+            return redirect('home')
         context = {'orders':orders}
         return render(request, "payment/not_shipped_dash.html", context)
     else:
@@ -71,6 +112,11 @@ def process_order(request):
             for key in list(request.session.keys()):
                 if key == "session_key":
                     del request.session[key]
+
+            current_user = Profile.objects.filter(user__id=request.user.id)
+            # delete shopping cart in database (old-cart)
+            current_user.update(old_cart="")
+
                     
             messages.success(request, 'Order placed!')
             return redirect('home')
@@ -100,7 +146,7 @@ def process_order(request):
             for key in list(request.session.keys()):
                 if key == "session_key":
                     del request.session[key]
-
+            
             messages.success(request, 'Order placed!')
             return redirect('home')
     else:

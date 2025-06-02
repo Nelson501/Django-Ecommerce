@@ -1,10 +1,13 @@
 
-
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# load our environmtal variable
+load_dotenv()
 
 
 # Quick-start development settings - unsuitable for production
@@ -32,7 +35,9 @@ INSTALLED_APPS = [
     'myapp',
     'cart',
     'payment',
+    # 'whitenoise.runserver_nostatic'
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -42,6 +47,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'myproject.urls'
@@ -70,12 +76,33 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME':'railway',
+        'USER':'postgres',
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST':'postgres.railway.internal',
+        'PORT':'8080',
     }
 }
+
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'railway',
+#         'USER': 'postgres',
+#         'PASSWORD': os.environ.get('DB_PASSWORD'),
+#         'HOST': 'postgres-production-ea0f.up.railway.app',  # 
+#         'PORT': '5432',                                # ← from Railway
+#     }
+# }
+
 
 
 # Password validation
@@ -114,8 +141,16 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [ BASE_DIR / 'static']
+
+
+# white noise static staff
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+# STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT =  BASE_DIR / 'media'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 

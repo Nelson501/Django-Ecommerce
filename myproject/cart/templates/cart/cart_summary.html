@@ -33,9 +33,9 @@
                     </p>
 
                     {% if product.sale %}
-                        <div class="d-flex justify-content-center small text-warning mb-2">
+                        <div class="d-flex justify-content-center small text-warning">
                             <div class="bi-star-fill"></div>
-                            &nbsp;&nbsp;Sale!&nbsp;&nbsp;
+                            <p class="mr-10">&nbsp;&nbsp;Sale!&nbsp;&nbsp;</p>
                             <div class="bi-star-fill"></div>
                         </div>
                         <!-- Product price on sale -->
@@ -45,15 +45,11 @@
                             <strong>${{ product.sale_price }}</strong>
                         </p>
                     {% else %}
-                    
                         <p><strong>${{ product.price }}</strong></p>
-                       
-                        
-                        
                     {% endif %}
                     <br><br>
 
-                    <div class="row justify-content-center">
+                    <div class="row mb-2">
                         <div class="col-md-2">Quantity</div>
                         <div class="col-md-2">
                             <select class="form-select form-select-sm" id="select{{ product.id }}">
@@ -75,6 +71,7 @@
 
                         </div>
                     </div>
+                    <br>
                 
 
                     <!-- Action Buttons -->
