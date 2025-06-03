@@ -13,4 +13,4 @@ cmds = [
 ]
 
 [phases.start]
-cmd = "/opt/venv/bin/python myproject/manage.py migrate && gunicorn myproject.wsgi:application --chdir myproject --bind 0.0.0.0:$PORT"
+cmd = "/opt/venv/bin/python myproject/manage.py migrate && /opt/venv/bin/gunicorn myproject.wsgi:application --chdir myproject --bind 0.0.0.0:$PORT"
