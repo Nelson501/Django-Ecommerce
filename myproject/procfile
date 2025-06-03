@@ -1,2 +1,3 @@
 web: gunicorn PROJECTNAME.wsgi --log-file
-web: python manage.py migrate && gunicorn myapp.wsgi
+web: python manage.py migrate && gunicorn myapp.wsg
+web: gunicorn myproject.wsgi:application --bind 0.0.0.0:$PORT
