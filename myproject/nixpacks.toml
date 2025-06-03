@@ -1,3 +1,7 @@
+[phases.start]
+cmd = "gunicorn myproject.wsgi:application --chdir myproject --bind 0.0.0.0:$PORT"
+
+
 [phases.setup]
 nixPkgs = ["python3", "postgresql_16.dev", "gcc"]
 
@@ -14,6 +18,3 @@ cmds = [
   "python myproject/manage.py collectstatic --noinput",
   "python myproject/manage.py migrate"
 ]
-
-[phases.start]
-cmd = "gunicorn myproject.wsgi:application --chdir myproject --bind 0.0.0.0:$PORT"
