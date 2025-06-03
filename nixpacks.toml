@@ -1,14 +1,11 @@
 [phases.setup]
-nixPkgs = ["python312", "postgresql_16", "gcc"]
+nixPkgs = ["python3", "postgresql_16", "gcc"]
 
 [phases.install]
 cmds = [
   "python -m venv --copies /opt/venv",
-  "/opt/venv/bin/pip install --upgrade pip",
-  "/opt/venv/bin/pip install --force-reinstall -r myproject/requirements.txt",
-  "/opt/venv/bin/pip show gunicorn"
+  "/opt/venv/bin/pip install -r myproject/requirements.txt"
 ]
-
 
 [phases.build]
 cmds = [
