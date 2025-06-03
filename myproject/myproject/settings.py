@@ -19,7 +19,7 @@ SECRET_KEY = 'django-insecure-hx5%uqb%fd6vqyrba9sfli*abmf@-1hg!*dd(*y%cka_lo5fu)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['django-ecommerce-production-e212.up.railway.app', 'https://django-ecommerce-production-e212.up.railway.app' ]
 CSRF_TRUSTED_ORIGINS = []
 
 
@@ -93,7 +93,7 @@ DATABASES = {
         'ENGINE':'django.db.backends.postgresql',
         'NAME': os.environ.get('DB_NAME'),
         'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'PASSWORD': os.environ['DB_PASSWORD'],
         'HOST': os.environ.get('DB_HOST'),
         'PORT': os.environ.get('DB_PORT'),
     }
