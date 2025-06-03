@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ["python3", "postgresql_16", "gcc"]
+nixPkgs = ["python3", "postgresql_16", "gcc", "libffi"]
 
 [phases.install]
 cmds = [
@@ -15,5 +15,3 @@ cmds = [
 
 [phases.start]
 cmd = "/opt/venv/bin/python myproject/manage.py migrate && /opt/venv/bin/gunicorn myproject.wsgi:application --chdir myproject --bind 0.0.0.0:$PORT"
-
-
