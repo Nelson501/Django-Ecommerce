@@ -1,12 +1,12 @@
 [phases.setup]
 nixPkgs = ["python3", "postgresql_16", "gcc"]
 
-[phases.install]
+[phases.build]
 cmds = [
-  "python -m venv --copies /opt/venv",
-  ". /opt/venv/bin/activate",
-  "pip install -r myproject/requirements.txt"
+  "/opt/venv/bin/python manage.py collectstatic --noinput",
+  "/opt/venv/bin/python manage.py migrate"
 ]
+
 
 [phases.build]
 cmds = [
