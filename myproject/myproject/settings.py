@@ -19,7 +19,8 @@ SECRET_KEY = 'django-insecure-hx5%uqb%fd6vqyrba9sfli*abmf@-1hg!*dd(*y%cka_lo5fu)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = []
+CSRF_TRUSTED_ORIGINS = []
 
 
 # Application definition
@@ -35,7 +36,7 @@ INSTALLED_APPS = [
     'myapp',
     'cart',
     'payment',
-    # 'whitenoise.runserver_nostatic'
+    'whitenoise.runserver_nostatic',
 ]
 
 
@@ -78,25 +79,25 @@ DB_LIVE = os.environ.get('DB_LIVE')
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-if DB_LIVE in ['False', False]:
+# if DB_LIVE in ['False', False]:
 
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': BASE_DIR / 'db.sqlite3',
+#         }
+#     }
+# else:
+DATABASES = {
+    'default': {
+        'ENGINE':'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT'),
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE':'django.db.backends.postgresql',
-            'NAME': os.environ.get('DB_NAME'),
-            'USER': os.environ.get('DB_USER'),
-            'PASSWORD': os.environ.get('DB_PASSWORD'),
-            'HOST': os.environ.get('DB_HOST'),
-            'PORT': os.environ.get('DB_PORT'),
-        }
-    }
+}
 
 
 
